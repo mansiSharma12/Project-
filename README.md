@@ -1,3 +1,4 @@
+By simply making water readily available, setting reminders, and encouraging regular water breaks, we can ensure that our team remains energized, alert, and capable of delivering their best performance. In this way, we support a healthier and more efficient workplace, where every drop counts in achieving our goals.
 Stay Hydrated While Working
 
 Default (GPT-3.5)
