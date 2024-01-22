@@ -1,3 +1,28 @@
+#!/bin/bash
+
+# Predefined target files
+target_files=(c_basefile.txt cpp_basefile.txt cs_basefile.txt)
+
+while read -r filename; do
+  # Extract extension
+  extension="${filename##*.}"
+
+  # Find matching target file
+  target_file=""
+  for file in "${target_files[@]}"; do
+    if [[ "${file%.*}" == "$extension" ]]; then
+      target_file="$file"
+      break
+    fi
+  done
+
+  # Check if target file found and file exists
+  if [[ -n "$target_file" && -f "$filename" ]]; then
+    echo "$filename" >> "$target_file"
+  fi
+done < basefile.txt
+
+echo "Finished processing files and transferring content."
 
 
 
