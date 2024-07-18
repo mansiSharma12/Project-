@@ -1,34 +1,24 @@
+import requests
+
 # Variables
-$tenantId = "your-tenant-id"
-$clientId = "your-client-id"
-$thumbprint = "your-certificate-thumbprint"
-
-# Fetch the certificate
-$cert = Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint
-
-# Prepare the JWT token
-$jwtToken = [System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler]::WriteToken(
-    (New-Object System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
-        $null,
-        "https://login.microsoftonline.com/$tenantId/v2.0",
-        @{},
-        [DateTime]::UtcNow,
-        [DateTime]::UtcNow.AddMinutes(5),
-        (New-Object System.IdentityModel.Tokens.SigningCredentials(
-            (New-Object System.IdentityModel.Tokens.X509SecurityKey($cert)),
-            "RS256"
-        ))
-    ))
-)
+tenant_id = 'your-tenant-id'
+client_id = 'your-client-id'
+client_secret = 'your-client-secret'  # If using a client secret
 
 # Get the access token
-$response = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" -ContentType "application/x-www-form-urlencoded" -Body @{
-    client_id = $clientId
-    scope = "https://graph.microsoft.com/.default"
-    client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-    client_assertion = $jwtToken
-    grant_type = "client_credentials"
+url = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token'
+headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+}
+body = {
+    'client_id': client_id,
+    'scope': 'https://graph.microsoft.com/.default',
+    'client_secret': client_secret,
+    'grant_type': 'client_credentials'
 }
 
-# Output the token
-$response.access_token
+response = requests.post(url, headers=headers, data=body)
+response_json = response.json()
+access_token = response_json['access_token']
+
+print("Access Token:", access_token)
