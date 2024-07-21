@@ -1,56 +1,48 @@
-import requests
-import time
-import jwt
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.backends import default_backend
+# Install MSAL (Microsoft Authentication Library) - Required for certificate-based authentication
+Install-Module MSAL-MSGraph
 
-# Variables
-tenant_id = 'your-tenant-id'
-client_id = 'your-client-id'
-cert_path = 'path-to-your-cert.pfx'
-cert_password = 'your-cert-password'
+# Replace placeholders with your details
+$clientId = "YOUR_CLIENT_ID"
+$certPath = "C:\path\to\your\certificate.pfx"  # Update with the actual path to your certificate file
+$password = "YOUR_CERTIFICATE_PASSWORD"  # Update with the password for your certificate file (if any)
+$tenantId = "YOUR_TENANT_ID"  # Optional: Tenant ID if different from common
 
-# Load the certificate
-with open(cert_path, 'rb') as cert_file:
-    cert_data = cert_file.read()
+# Load the client certificate
+$cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($certPath, $password, [System.Security.Cryptography.X509Certificates.X509KeyCertIncludeOption]::Chain)
 
-# Load the private key
-private_key = serialization.load_pkcs12(cert_data, cert_password.encode()).key
+# Configure MSAL for certificate authentication
+$msalConfig = New-Object MSAL.PublicClientApplicationConfig -ArgumentList $clientId
+$msalConfig.Authority = "https://login.microsoftonline.com/$tenantId/v2.0/token"  # Update with tenant ID if needed
+$msalConfig.Certificate = $cert
 
-# Create a JWT token
-now = int(time.time())
-exp = now + 3600  # Token valid for 1 hour
-token = jwt.encode(
-    {
-        'aud': f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token',
-        'iss': client_id,
-        'sub': client_id,
-        'jti': 'unique-jwt-id',
-        'nbf': now,
-        'exp': exp
-    },
-    private_key,
-    algorithm='RS256'
-)
+# Create a public client application
+$pca = New-Object MSAL.PublicClientApplication -ArgumentList $msalConfig
 
-# Request the access token
-url = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token'
-headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
+# Define the scopes (permissions) requested
+$scopes = @("https://graph.microsoft.com/User.Read.All")  # Adjust based on your specific needs
+
+try {
+  # Attempt to acquire an access token (interactive flow might be required)
+  $accounts = $pca.GetAccounts()
+  if ($accounts.Count -eq 0) {
+    Write-Error "No accounts found. This script requires interactive flow, which is not recommended for production use due to security concerns."
+  } else {
+    $account = $accounts[0]
+    $tokenResult = $pca.AcquireTokenSilent($scopes, $account)  # Try silent flow first
+    if (!$tokenResult) {
+      Write-Warning "Silent flow failed. Falling back to interactive flow."
+      $tokenResult = $pca.AcquireTokenInteractive($scopes, $account)
+    }
+  }
+
+  # Access token is available in $tokenResult.AccessToken
+  $accessToken = $tokenResult.AccessToken
+
+  Write-Host "Access Token:"
+  Write-Host $accessToken
+
+  # Use the access token to call Microsoft Graph API (replace with your desired API call)
+  # ... (your Graph API request here) ...
+} catch {
+  Write-Error ("Error: " + $_.Exception.Message)
 }
-body = {
-    'client_id': client_id,
-    'scope': 'https://graph.microsoft.com/.default',
-    'client_assertion_type': 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-    'client_assertion': token,
-    'grant_type': 'client_credentials'
-}
-
-response = requests.post(url, headers=headers, data=body)
-response_json = response.json()
-
-if 'access_token' in response_json:
-    access_token = response_json['access_token']
-    print('Access Token:', access_token)
-else:
-    print('Error obtaining access token:', response_json)
