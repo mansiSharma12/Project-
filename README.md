@@ -46,3 +46,45 @@ try {
 } catch {
   Write-Error ("Error: " + $_.Exception.Message)
 }
+
+
+
+
+# Load the required assembly
+Add-Type -AssemblyName System.Security.Cryptography.X509Certificates
+
+
+//Python
+import msal
+
+# Replace placeholders with your details
+client_id = "YOUR_CLIENT_ID"
+authority = f"https://login.microsoftonline.com/YOUR_TENANT_ID/v2.0"  # Update with tenant ID if needed
+certificate_path = "path/to/your/certificate.pem"  # Update with the actual path to your certificate file
+thumbprint = "YOUR_CERTIFICATE_THUMBPRINT"
+
+# Load certificate from PEM file
+with open(certificate_path, "rb") as cert_file:
+    certificate_bytes = cert_file.read()
+
+# Configure MSAL for certificate authentication
+app = msal.ConfidentialClientApplication(
+    client_id=client_id, authority=authority, client_credential={"thumbprint": thumbprint, "certificate": certificate_bytes}
+)
+
+# Define the scopes (permissions) requested
+scopes = ["https://graph.microsoft.com/User.Read.All"]  # Adjust based on your specific needs
+
+try:
+    # Attempt to acquire an access token
+    result = app.acquire_token_for_client(scopes=scopes)
+    access_token = result.get("access_token")
+
+    print("Access Token:")
+    print(access_token)
+
+    # Use the access token to call Microsoft Graph API (replace with your desired API call)
+    # ... (your Graph API request here) ...
+except Exception as e:
+    print("Error:", e)
+
