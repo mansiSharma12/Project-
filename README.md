@@ -88,3 +88,4 @@ try:
 except Exception as e:
     print("Error:", e)
 
+$oooSettings = Invoke-MgGraphRequest -Method Get -Uri "https://graph.microsoft.com/v1.0/users/$userPrincipalName/messages/outOfOffice"
