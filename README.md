@@ -92,3 +92,99 @@ $oooSettings = Invoke-MgGraphRequest -Method Get -Uri "https://graph.microsoft.c
 
 [System.Security.Cryptography.X509Certificates]::GetTypes()
 
+
+#Script 1
+
+# Define the IP addresses to test
+$ipAddresses = @("8.8.8.8", "1.1.1.1", "216.58.217.206")  # Google DNS, Cloudflare DNS, Your Local IP (replace with yours)
+
+# Function to perform the API call and handle errors
+function Get-IPLocation {
+  param (
+    [Parameter(Mandatory=$true)]
+    [string] $IPAddress
+  )
+
+  try {
+    $response = Invoke-RestMethod -Uri ("https://ip-api.com/json/$IPAddress")
+    return $response
+  } catch {
+    Write-Error ("Error retrieving location for IP $IPAddress: $_" )
+    return $null
+  }
+}
+
+# Test each IP address
+foreach ($ipAddress in $ipAddresses) {
+  $location = Get-IPLocation -IPAddress $ipAddress
+
+  if ($location) {
+    Write-Host ("IP Address: $ipAddress")
+    Write-Host ("  Country: $($location.country)")
+    Write-Host ("  City: $($location.city)")
+    Write-Host ("  Region: $($location.regionName)")
+    Write-Host ("  ---")
+  }
+}
+
+
+#script 2
+# Define the number of files
+$numFiles = 25
+
+# Function to generate random characters
+function Get-RandomString {
+  param (
+    [int] $length = 10  # Default length
+  )
+
+  [char[]] $chars = (65..90) + (97..122) + (48..57)  # Uppercase, lowercase, numbers
+  $randomString = New-Object System.Text.StringBuilder
+  for ($i = 0; $i -lt $length; $i++) {
+    $randomString.Append($chars[Get-Random (0..$chars.Length - 1)])
+  }
+  return $randomString.ToString()
+}
+
+# Create output array for report
+$report = @()
+
+# Loop to create files and gather information
+for ($i = 1; $i -le $numFiles; $i++) {
+  # Generate random file path and name
+  $filePath = Join-Path -Path "C:\Temp" -ChildPath ("TestFile_$i.txt")  # Adjust path as needed
+
+  # Generate random content
+  $content = Get-RandomString -Length (Get-Random 10..50)
+
+  # Create the file
+  New-Item -Path $filePath -ItemType File -Force | Out-Null
+
+  # Add content to the file
+  Add-Content -Path $filePath -Value $content
+
+  # Get file properties
+  $fileInfo = Get-Item -Path $filePath
+
+  # Create report object for this file
+  $fileReport = New-Object PSObject -Property @{
+    "File Name"  = $fileInfo.Name
+    "Full Path"  = $fileInfo.FullName
+    "Length (bytes)" = $fileInfo.Length
+    "Creation Time" = $fileInfo.CreationTime
+  }
+
+  # Add report object to the report array
+  $report += $fileReport
+}
+
+# Convert report array to CSV and save it
+$report | Export-Csv -Path "TestReport.csv" -NoTypeInformation -Encoding UTF8
+
+# Delete created files
+Remove-Item -Path "C:\Temp\TestFile_*.txt" -Force  # Adjust path as needed
+
+Write-Host "Report saved to TestReport.csv"
+Write-Host "Files deleted successfully"
+
+
