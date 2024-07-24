@@ -188,3 +188,5 @@ Write-Host "Report saved to TestReport.csv"
 Write-Host "Files deleted successfully"
 
 
+
+I have developed a high-level Power Automate workflow that sets out-of-office status. Initial testing on my email has been successful, but further testing requires app registration with the necessary permissions. Additionally, the workflow needs improvements and feature enhancements. Could we discuss the next steps and the resources needed for app registration and testing?"
