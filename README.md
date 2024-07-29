@@ -4,3 +4,4 @@
     "grant_type": "client_credentials",
     "scope": "https://graph.microsoft.com/.default"
 }
+https://login.microsoftonline.com/<your_tenant_id>/oauth2/v2.0/token
