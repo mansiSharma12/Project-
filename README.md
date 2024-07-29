@@ -5,3 +5,5 @@
     "scope": "https://graph.microsoft.com/.default"
 }
 https://login.microsoftonline.com/<your_tenant_id>/oauth2/v2.0/token
+
+Content-Type: application/x-www-form-urlencoded
