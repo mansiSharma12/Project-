@@ -29,3 +29,28 @@ $response = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -ContentType "app
 # Output the access token
 $accessToken = $response.access_token
 Write-Output $accessToken
+
+/* PYHTON */
+import requests
+
+# Define variables
+tenant_id = 'your-tenant-id'
+client_id = 'your-client-id'
+client_secret = 'your-client-secret'
+scope = 'https://graph.microsoft.com/.default'  # Adjust scope as necessary
+token_endpoint = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token'
+
+# Prepare the body of the request
+body = {
+    'grant_type': 'client_credentials',
+    'client_id': client_id,
+    'client_secret': client_secret,
+    'scope': scope
+}
+
+# Make the request and get the token
+response = requests.post(token_endpoint, data=body)
+response.raise_for_status()  # Raise an exception for HTTP errors
+
+# Output the access token
+
