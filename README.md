@@ -54,3 +54,15 @@ response.raise_for_status()  # Raise an exception for HTTP errors
 
 # Output the access token
 
+
+1. Initializing a Repository
+Extract: Learn how to set up a new Git repository to start tracking your project.
+
+2. Making and Viewing Commits
+Extract: Discover how to make commits and view commit history to manage changes effectively.
+
+3. Branching and Merging
+Extract: Understand how to create branches and merge changes to streamline your workflow.
+
+4. Pushing and Pulling Changes
+Extract: Explore how to push your changes to a remote repository and pull updates from collaborators.
