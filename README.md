@@ -66,3 +66,17 @@ Extract: Understand how to create branches and merge changes to streamline your 
 
 4. Pushing and Pulling Changes
 Extract: Explore how to push your changes to a remote repository and pull updates from collaborators.
+
+/********************************************************************************************************************************/
+
+1. Repository Initialization
+Extract: Kickstart your project with Git. Learn the foundational step of creating a new repository to begin version control and streamline your workflow from day one.
+
+2. Commit Creation and History Analysis
+Extract: Master the art of making commits. Understand how to document changes effectively and delve into the commit history to track project evolution with precision.
+
+3. Branch Management and Merging Strategies
+Extract: Elevate your collaboration skills. Discover how to create and manage branches, and merge changes seamlessly to maintain a clean and efficient project history.
+
+4. Remote Repository Interaction
+Extract: Synchronize with your team. Explore the essential commands for pushing your updates to a remote repository and pulling changes from collaborators to stay in sync effortlessly.
