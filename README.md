@@ -55,28 +55,43 @@ response.raise_for_status()  # Raise an exception for HTTP errors
 # Output the access token
 
 
-1. Initializing a Repository
-Extract: Learn how to set up a new Git repository to start tracking your project.
+try {
+    $ldapConnection = New-Object System.DirectoryServices.DirectoryEntry("LDAP://your_ldap_server")
+    Write-Host "Connection successful"
+} catch {
+    Write-Host "Connection failed: $($_.Exception.Message)"
+}
 
-2. Making and Viewing Commits
-Extract: Discover how to make commits and view commit history to manage changes effectively.
 
-3. Branching and Merging
-Extract: Understand how to create branches and merge changes to streamline your workflow.
+# Import Active Directory module
+Import-Module ActiveDirectory
 
-4. Pushing and Pulling Changes
-Extract: Explore how to push your changes to a remote repository and pull updates from collaborators.
+# Define the LDAP Load Balancer server
+$ldapServer = "ldap://your-ldap-load-balancer-server"
 
-/********************************************************************************************************************************/
+# Define the properties to fetch
+$properties = @("givenName", "sn", "mail", "physicalDeliveryOfficeName")
 
-1. Repository Initialization
-Extract: Kickstart your project with Git. Learn the foundational step of creating a new repository to begin version control and streamline your workflow from day one.
+# Search the Active Directory
+$searchResult = Get-ADUser -Filter * -SearchBase "DC=yourdomain,DC=com" -SearchScope Subtree -Property $properties -Server $ldapServer
 
-2. Commit Creation and History Analysis
-Extract: Master the art of making commits. Understand how to document changes effectively and delve into the commit history to track project evolution with precision.
+# Create an array to hold the user information
+$userInfoArray = @()
 
-3. Branch Management and Merging Strategies
-Extract: Elevate your collaboration skills. Discover how to create and manage branches, and merge changes seamlessly to maintain a clean and efficient project history.
+foreach ($user in $searchResult) {
+    # Create a PSObject for each user
+    $userInfo = New-Object PSObject -Property @{
+        FirstName = $user.givenName
+        LastName  = $user.sn
+        Email     = $user.mail
+        Location  = $user.physicalDeliveryOfficeName
+    }
 
-4. Remote Repository Interaction
-Extract: Synchronize with your team. Explore the essential commands for pushing your updates to a remote repository and pulling changes from collaborators to stay in sync effortlessly.
+    # Add the PSObject to the array
+    $userInfoArray += $userInfo
+}
+
+# Output the array to a CSV file
+$userInfoArray | Export-Csv -Path "UserInformation.csv" -NoTypeInformation -Encoding UTF8
+
+Write-Output "User information has been exported to UserInformation.csv"
