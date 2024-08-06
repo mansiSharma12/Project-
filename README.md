@@ -95,3 +95,59 @@ foreach ($user in $searchResult) {
 $userInfoArray | Export-Csv -Path "UserInformation.csv" -NoTypeInformation -Encoding UTF8
 
 Write-Output "User information has been exported to UserInformation.csv"
+
+
+
+/*******************************************************************************************************8888888/
+# Replace with your LDAP information
+$ldapServer = "your_ldap_server"
+$baseDN = "DC=yourdomain,DC=com"
+
+# Function to fetch user information from LDAP
+function Get-LDAPUserInfo {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$companyName,
+        [Parameter(Mandatory=$true)]
+        [string]$designation,
+        [Parameter(Mandatory=$true)]
+        [datetime]$startDate
+    )
+
+    $filter = "(company=$companyName)(description=$designation)(userAccountControl:1.2.840.113556.1.4.803:=512)(whenCreated<=@{DateTime=$startDate})"
+    $searchBase = $baseDN
+
+    try {
+        $ldapConnection = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$ldapServer")
+        $ldapSearch = New-Object System.DirectoryServices.DirectorySearcher($ldapConnection)
+        $ldapSearch.Filter = $filter
+        $ldapSearch.SearchScope = "Subtree"
+        $ldapSearch.PropertiesToLoad = @("samaccountname", "displayName", "company", "description", "whenCreated")
+
+        $searchResult = $ldapSearch.FindOne()
+        if ($searchResult) {
+            $user = New-Object PSObject
+            $user | Add-Member -NotePropertyName "Company" -NotePropertyValue $searchResult.Properties["company"].Value[0]
+            $user | Add-Member -NotePropertyName "Designation" -NotePropertyValue $searchResult.Properties["description"].Value[0]
+            $user | Add-Member -NotePropertyName "StartDate" -NotePropertyValue $searchResult.Properties["whenCreated"].Value[0]
+            return $user
+        } else {
+            Write-Warning "No user found matching the criteria."
+            return $null
+        }
+    } catch [System.Exception] {
+        Write-Error "An error occurred: $($_.Exception.Message)"
+        return $null
+    } finally {
+        if ($ldapConnection) { $ldapConnection.Dispose() }
+        if ($ldapSearch) { $ldapSearch.Dispose() }
+    }
+}
+
+# Example usage
+$user = Get-LDAPUserInfo -companyName "Your Company" -designation "Your Designation" -startDate (Get-Date "2023-01-01")
+
+if ($user) {
+    $user | Export-Csv "userInfo.csv" -NoTypeInformation
+}
+
