@@ -1,8 +1,3 @@
-@(3..1157 | Where-Object { $_ % 3 -eq 0 }) | ForEach-Object {
-    [PSCustomObject]@{
-        Sum  = $_ | Measure-Object -Sum | Select-Object -ExpandProperty Sum
-        Avg  = $_ | Measure-Object -Average | Select-Object -ExpandProperty Average
-        Max  = $_ | Measure-Object -Maximum | Select-Object -ExpandProperty Maximum
-        Min  = $_ | Measure-Object -Minimum | Select-Object -ExpandProperty Minimum
-    }
-}
+I've been working on the power automate workflow for India DoT compliance reporting . Currently we are having some issues as the UBS DLP policy restricts us to create custom connectors in the workflow . I'm in talk with the engg team on this and see how we can resolve it.
+ login enterprise, over the past few weeks , we have deployed the scripts for excel and SharePoint in prod. Currently, I am creating the workload for one note testing, once that is done , we will be done with the M365 application v1 testing.
+Regarding MyHuB automation , I'm primarily involved in the devops portion where we have to  automate the process of triggering gitlab pipelines .we created dev environment for us in azure now we are in discussion on the resources we could use to achieve our goal.
