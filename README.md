@@ -1,3 +1,12 @@
-I've been working on the power automate workflow for India DoT compliance reporting . Currently we are having some issues as the UBS DLP policy restricts us to create custom connectors in the workflow . I'm in talk with the engg team on this and see how we can resolve it.
- login enterprise, I am creating the workload for one note testing,  over the past few weeks , I have deployed the scripts for excel and SharePoint in prod.  hopefully soon, we will be done with the M365 application v1 testing.
-Regarding MyHuB automation , I'm primarily involved in the devops portion where we have to  automate the process of triggering gitlab pipelines .we created dev environment for us in azure now we are in discussion on the resources we could use to achieve our goal.
+Overview:
+
+The custom connector is designed to interact with the GitLab API for project management purposes. Specifically, the connector will be used to create issues in various GitLab projects.
+
+Authentication:
+
+Type: The connector will use Personal Access Token (PAT) authentication.
+Details: GitLab requires a PRIVATE-TOKEN header to authenticate API requests. This is handled in the custom connector through API key-based authentication.
+
+Create Issue: The primary action allows users to create an issue in a GitLab project.
+Dynamic URL: The endpoint for creating an issue is /api/v4/projects/{projectId}/issues, where projectId is passed dynamically.
+Parameters: Users can pass parameters such as title (required), description (optional), labels, assignee_ids, etc., either through the query string or body.
