@@ -1,17 +1,4 @@
-The custom connector will prompt for the PAT value when the user configures the connector for the first time.
-Users will need to generate their own PAT in GitLab, as discussed, and then securely input it during the connector setup.
+I am primarily working on India DoT workflow. A week before last ,the DLP issue got resolved , now I am working on it on priority basis and aiming to complete the v1 testing by end of next week hopefully.
 
-# Define the file path
-$filePath = "C:\temp\processes.txt"
-
-# Get all running processes and save them to the file
-Get-Process | Out-File -FilePath $filePath
-
-# Output confirmation
-Write-Host "Processes saved to $filePath."
-
-# Delete the file after saving
-Remove-Item -Path $filePath -Force
-
-# Output confirmation
-Write-Host "$filePath has been deleted."
+Next we had this requirement of creating gitlab issues from SharePoint. We delivered the powershell script on adhoc basis but I have been reading the Amelia documentation to a workflow on Amelia itself . 
+Then for login enterprise, I created the workload for onedrive yesterday and currently it's in testing phase.
