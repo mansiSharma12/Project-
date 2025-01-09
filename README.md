@@ -1,5 +1,1 @@
-concat(
-    variables('hour'),
-    if(equals(variables('min'), ''), '', concat(':', variables('min'))),
-    if(equals(variables('sec'), ''), '', concat(':', variables('sec')))
-)
+First for amelia side of things, we have already have a powershell script which created issues in gitlab , now I am trying to establish eva connection and schedule it in amelia. Second, India DoT is done but suruchi asked for a couple of additions to the workflow . One of them is completed and the other is still in progress . will try to complete that by end of this week.
