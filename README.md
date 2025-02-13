@@ -1,31 +1,54 @@
-public async Task<string> GetChatCompletionAsync(string userInput)
-{
-    var csvData = LoadCsvAsJson(@"C:\\USB\\Dev\\Test\\Teams_CQD_Backend\\Teams_CQD_Backend\\Data\\TeamsCQDSampleData1.csv");
+# Import PnP PowerShell module
+Import-Module PnP.PowerShell
 
-    try
-    {
-        _logger.LogInformation("Sending request to Azure OpenAI with input: {UserInput}", userInput);
+# Step 1: Fetch Username and Password from Amelia
+# Modify these lines based on how you retrieve variables from Amelia
+$svcUsername = "svc_account@yourtenant.onmicrosoft.com"
+$svcPassword = "<Fetched_Password_From_Amelia>"  # Replace this with actual fetching logic
 
-        var payload = new
-        {
-            messages = new[]
-            {
-                new { role = "system", content = "You are a data analysis assistant specializing in call quality data." },
-                new { role = "user", content = userInput },
-                new { role = "assistant", content = $"Dataset:\n{csvData}" }
-            }
-        };
+# Example: If you are using Amelia's API or cmdlet, replace the above line accordingly
+# $svcPassword = Get-AmeliaVariable -Name "YourPasswordVariable"
 
-        var jsonPayload = JsonSerializer.Serialize(payload);
-        var requestContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+# Step 2: Convert Password to SecureString
+$securePassword = ConvertTo-SecureString $svcPassword -AsPlainText -Force
 
-        var requestUri = "https://sanbox-ai.openai.azure.com/openai/deployments/gpt-4/chat/completions?api-version=2024-10-01";
+# Step 3: Create PSCredential Object
+$cred = New-Object System.Management.Automation.PSCredential ($svcUsername, $securePassword)
 
-        var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
-        {
-            Content = requestContent
-        };
-        request.Headers.Add("api-key", _apiKey);
+# Step 4: Connect to SharePoint Online using PnP PowerShell
+$siteUrl = "https://yourtenant.sharepoint.com/sites/yoursite"
+
+Connect-PnPOnline -Url $siteUrl -Credentials $cred
+
+if ($?) {
+    Write-Host "Connected to SharePoint site: $siteUrl" -ForegroundColor Green
+
+    # Step 5: Fetch SharePoint List Data
+    $listName = "YourListName"
+    $items = Get-PnPListItem -List $listName
+    $items | ForEach-Object { 
+        Write-Host "Item: $($_.FieldValues)" 
+    }
+
+    # Step 6: Disconnect after completion
+    Disconnect-PnPOnline
+    Write-Host "Disconnected from SharePoint site." -ForegroundColor Yellow
+} else {
+    Write-Host "Failed to connect to SharePoint site. Check credentials or permissions." -ForegroundColor Red
+}
+
+
+        
+
+
+
+
+
+
+
+
+
+quest.Headers.Add("api-key", _apiKey);
 
         var response = await _httpClient.SendAsync(request);
         var responseString = await response.Content.ReadAsStringAsync();
