@@ -1,19 +1,5 @@
 # Import PnP PowerShell module
-Import-Module PnP.PowerShell
-
-# Step 1: Fetch Username and Password from Amelia
-# Modify these lines based on how you retrieve variables from Amelia
-$svcUsername = "svc_account@yourtenant.onmicrosoft.com"
-$svcPassword = "<Fetched_Password_From_Amelia>"  # Replace this with actual fetching logic
-
-# Example: If you are using Amelia's API or cmdlet, replace the above line accordingly
-# $svcPassword = Get-AmeliaVariable -Name "YourPasswordVariable"
-
-# Step 2: Convert Password to SecureString
-$securePassword = ConvertTo-SecureString $svcPassword -AsPlainText -Force
-
-# Step 3: Create PSCredential Object
-$cred = New-Object System.Management.Automation.PSCredential ($svcUsername, $securePassword)
+Credential ($svcUsername, $securePassword)
 
 # Step 4: Connect to SharePoint Online using PnP PowerShell
 $siteUrl = "https://yourtenant.sharepoint.com/sites/yoursite"
@@ -190,4 +176,6 @@ var _httpClient = new HttpClient(handler);
 4️⃣ **If PowerShell works but your chatbot doesn’t, force it to use the system proxy.**  
 
 Would you like help interpreting Fiddler logs if you capture traffic?
+
+equals(trim(coalesce(split(item(),';')?[12],'')),'IN')
 
