@@ -179,3 +179,49 @@ Would you like help interpreting Fiddler logs if you capture traffic?
 
 equals(trim(coalesce(split(item(),';')?[12],'')),'IN')
 
+
+
+# Authentication details
+$tenantId = "<Your-Tenant-ID>"
+$clientId = "<Your-Client-ID>"
+$clientSecret = "<Your-Client-Secret>"
+$siteId = "<Your-SharePoint-Site-ID>"
+$listId = "<Your-SharePoint-List-ID>"
+$itemId = "<Your-Item-ID>"  # ID of the item you want to update
+$graphBaseUrl = "https://graph.microsoft.com/v1.0"
+
+# Get Access Token
+$tokenUrl = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+$body = @{
+    client_id     = $clientId
+    client_secret = $clientSecret
+    scope         = "https://graph.microsoft.com/.default"
+    grant_type    = "client_credentials"
+}
+
+$tokenResponse = Invoke-RestMethod -Method Post -Uri $tokenUrl -ContentType "application/x-www-form-urlencoded" -Body $body
+$accessToken = $tokenResponse.access_token
+
+# Headers for Graph API Request
+$headers = @{ 
+    Authorization = "Bearer $accessToken"
+    "Content-Type" = "application/json"
+}
+
+# Data to Update (Modify the fields as needed)
+$updateFields = @{
+    "Title"        = "Updated Title"
+    "Description"  = "Updated description for this item"
+    "Status"       = "Completed"
+} | ConvertTo-Json -Depth 2
+
+# Graph API Endpoint to Update the Item
+$updateUrl = "$graphBaseUrl/sites/$siteId/lists/$listId/items/$itemId/fields"
+
+# Make the PATCH request to update the item
+$response = Invoke-RestMethod -Method Patch -Uri $updateUrl -Headers $headers -Body $updateFields
+
+# Output response
+Write-Host "Updated item successfully with new values."
+
+
