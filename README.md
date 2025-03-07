@@ -1,4 +1,18 @@
-# Import PnP PowerShell module
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+  "elmType": "a",
+  "attributes": {
+    "href": "@currentField",
+    "target": "_blank"
+  },
+  "style": {
+    "color": "blue",
+    "text-decoration": "underline"
+  },
+  "txtContent": "@currentField"
+}
+
+ Import PnP PowerShell module
 Credential ($svcUsername, $securePassword)
 
 # Step 4: Connect to SharePoint Online using PnP PowerShell
