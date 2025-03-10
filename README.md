@@ -1,5 +1,52 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+  "elmType": "div",
+  "children": [
+    {
+      "elmType": "a",
+      "style": {
+        "text-align": "center",
+        "display": "flex",
+        "justify-content": "center",
+        "align-items": "center",
+        "height": "100%",
+        "color": "blue",
+        "text-decoration": "underline"
+      },
+      "attributes": {
+        "href": "=if(@currentField != '', @currentField, '')",
+        "target": "_blank"
+      },
+      "txtContent": "=if(@currentField != '', @currentField, '')"
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
   "elmType": "a",
   "attributes": {
     "href": "@currentField",
