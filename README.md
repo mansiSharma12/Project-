@@ -1,3 +1,24 @@
+Currently I am working on 3 items.  First is the automated creation of GL issues from share point list . This automation requirement we received from jonathan where he wanted to created GL issues based on PRB ticket information and its status for blamless postmortem . I have created a workflow in amelia for this its almost 80% completed . Then second item is the viceversa of the previous item which is to take information from gitlab issues/epics and populate to SPO. i have created the automation of this and completed the testing in dev. Once we have our app registration in prod,  i will move the automation to prod. This will fetch all issues/epics of our SRE team from gitlab and create a list in our official eus infraops SRE site. 
+Then next automation I am working on is to create MS support tickets once any incident or outage has been identified. I have recently started working on this and currently deciding on the platforms that we have for automations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
   "elmType": "div",
