@@ -1,3 +1,33 @@
+As part of SRE automation team,  I have gained experience in power automate by creating a workflow for India DoT compliance reporting where the goal was to check users compliance status with respect to external calls made. For a few months , worked with SRE monitoring team on a project using Login Enterprise tool to monitoring M365 application. I created scripts in .net for multiple applications so got a bit of experience in this language. 
+Then talking on the python side - I have had experience in using data handling libraries like numpy and pandas . In my initial months in UBS , i have got to work on python flask where I worked on building a backend essentially handling rest APIs calls to onboard users to an internal enterprise tool. 
+Currently I am working on a new requirement for which I have started exploring selenium for web UI automation and testing . 
+
+
+
+I worked with SRE monitorinon a project using Login Enterprise to monitor Microsoft 365 applications, where I built automation scripts using .NET. It was a completely new tech stack for me, but I picked it up quickly and now have a solid working understanding of scripting in .NET environments.”
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Currently I am working on 3 items.  First is the automated creation of GL issues from share point list . This automation requirement we received from jonathan where he wanted to created GL issues based on PRB ticket information and its status for blamless postmortem . I have created a workflow in amelia for this its almost 80% completed . Then second item is the viceversa of the previous item which is to take information from gitlab issues/epics and populate to SPO. i have created the automation of this and completed the testing in dev. Once we have our app registration in prod,  i will move the automation to prod. This will fetch all issues/epics of our SRE team from gitlab and create a list in our official eus infraops SRE site. 
 Then next automation I am working on is to create MS support tickets once any incident or outage has been identified. I have recently started working on this and currently deciding on the platforms that we have for automations.
 
