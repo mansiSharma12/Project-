@@ -1,3 +1,13 @@
+First item is prb ticket automation, script is working in prod , now I am working on to schedule it in Amelia. Second is automated ms support ticket creation, I am currently trying to find out how can I get the administrator role on virtual worker as rpa bot runs on that and side by side , I am also creating a sample workflow in automation anywhere before actually getting started with the ticket creation automation. Then third, working on the automated server restart of powerapp gateways along with atul, the team is currently working on the alert generation in bigpanda so we are currently working on a script that could check from the list of servers periodically and restart them
+
+
+
+
+
+
+
+
+
 As part of SRE automation team,  I have gained experience in power automate by creating a workflow for India DoT compliance reporting where the goal was to check users compliance status with respect to external calls made. For a few months , worked with SRE monitoring team on a project using Login Enterprise tool to monitoring M365 application. I created scripts in .net for multiple applications so got a bit of experience in this language. 
 Then talking on the python side - I have had experience in using data handling libraries like numpy and pandas . In my initial months in UBS , i have got to work on python flask where I worked on building a backend essentially handling rest APIs calls to onboard users to an internal enterprise tool. 
 Currently I am working on a new requirement for which I have started exploring selenium for web UI automation and testing . 
